@@ -1,1 +1,1 @@
-# cli
+# @hyperplay/cli
