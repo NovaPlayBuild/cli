@@ -17,7 +17,7 @@ platforms:
 
 ```
 
-Run the publish command from the hyperplay cli.
+Run the publish command from the hyperplay cli. Set the publisher private key via an envrionment variable if CI/CD.
 ```bash
 HYPERPLAY_PRIVATE_KEY=0x1234 hyperplay publish
 ```
