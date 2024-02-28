@@ -4,7 +4,7 @@
   "description": "Hyperplay CLI",
   "author": "HyperPlay Labs, Inc.",
   "bin": {
-    "valist": "./bin/run"
+    "hyperplay": "./bin/run"
   },
   "homepage": "https://github.com/hyperplay/cli",
   "license": "MPL-2.0",
@@ -19,7 +19,7 @@
   "dependencies": {
     "@oclif/core": "^1.8.0",
     "@oclif/plugin-help": "^5",
-    "@valist/sdk": "latest",
+    "@valist/sdk": "^2.9.3",
     "ethers": "^5.5.4",
     "files-from-path": "1.0.0",
     "inquirer": "^8.2.4",
