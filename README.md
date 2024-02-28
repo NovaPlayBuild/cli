@@ -2,6 +2,8 @@
 
 ## Usage
 
+Create a `hyperplay.yml` in your project folder.
+
 ```yml
 account: test-ground
 project: test44
@@ -15,6 +17,7 @@ platforms:
 
 ```
 
+Run the publish command from the hyperplay cli.
 ```bash
-hyperplay publish test-ground/test-44/0.0.5 ipfs.zip
+hyperplay publish
 ```
