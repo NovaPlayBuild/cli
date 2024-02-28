@@ -19,5 +19,5 @@ platforms:
 
 Run the publish command from the hyperplay cli.
 ```bash
-hyperplay publish
+HYPERPLAY_PRIVATE_KEY=0x1234 hyperplay publish
 ```

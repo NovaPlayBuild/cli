@@ -5,6 +5,7 @@ import YAML from 'yaml';
 import * as fs from 'node:fs';
 import * as flags from '../flags';
 import { select } from '../keys';
+import { uploadRelease } from '../releases';
 
 export default class Publish extends Command {
   static provider?: ethers.Signer;
@@ -59,6 +60,8 @@ export default class Publish extends Command {
     if (!config.release) this.error('invalid release name');
     if (!config.platforms) this.error('no platforms configured');
 
+    console.log({ platforms: config.platforms });
+
     const privateKey = flags['private-key'] || await select();
     const metaTx = flags['meta-tx'];
 
@@ -85,18 +88,18 @@ export default class Publish extends Command {
     }
 
     CliUx.ux.action.start('uploading files');
-    const release = await valist.uploadRelease(config);
+    const release = await uploadRelease(valist, config);
     CliUx.ux.action.stop();
 
     CliUx.ux.log(`successfully uploaded files to IPFS: ${release.external_url}`);
 
-    CliUx.ux.action.start('publishing release');
-    const tx = await valist.createRelease(projectID, config.release, release);
-    CliUx.ux.action.stop();
+    // CliUx.ux.action.start('publishing release');
+    // const tx = await valist.createRelease(projectID, config.release, release);
+    // CliUx.ux.action.stop();
 
-    CliUx.ux.action.start(`confirming transaction ${tx.hash}`);
-    await tx.wait();
-    CliUx.ux.action.stop();
+    // CliUx.ux.action.start(`confirming transaction ${tx.hash}`);
+    // await tx.wait();
+    // CliUx.ux.action.stop();
 
     CliUx.ux.log(`successfully published ${config.account}/${config.project}/${config.release}!`);
 
