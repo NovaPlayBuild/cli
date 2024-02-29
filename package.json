@@ -51,8 +51,8 @@
     "typescript": "^4.6.4"
   },
   "oclif": {
-    "bin": "valist",
-    "dirname": "valist",
+    "bin": "hyperplay",
+    "dirname": "hyperplay",
     "commands": "./dist/commands",
     "plugins": [
       "@oclif/plugin-help"
