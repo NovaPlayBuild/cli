@@ -93,13 +93,13 @@ export default class Publish extends Command {
 
     CliUx.ux.log(`successfully uploaded files to IPFS: ${release.external_url}`);
 
-    // CliUx.ux.action.start('publishing release');
-    // const tx = await valist.createRelease(projectID, config.release, release);
-    // CliUx.ux.action.stop();
+    CliUx.ux.action.start('publishing release');
+    const tx = await valist.createRelease(projectID, config.release, release);
+    CliUx.ux.action.stop();
 
-    // CliUx.ux.action.start(`confirming transaction ${tx.hash}`);
-    // await tx.wait();
-    // CliUx.ux.action.stop();
+    CliUx.ux.action.start(`confirming transaction ${tx.hash}`);
+    await tx.wait();
+    CliUx.ux.action.stop();
 
     CliUx.ux.log(`successfully published ${config.account}/${config.project}/${config.release}!`);
 
