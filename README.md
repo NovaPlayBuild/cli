@@ -1,5 +1,14 @@
 # @hyperplay/cli
 
+## Install 
+
+```
+$ npm install -g mynewcli
+$ mynewcli
+# OR
+$ npx mynewcli
+```
+
 ## Usage
 
 Create a `hyperplay.yml` in your project folder.
