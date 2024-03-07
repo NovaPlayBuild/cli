@@ -30,7 +30,7 @@ export async function loginAndPublish(client: AxiosInstance, cookieJar: CookieJa
   const csrfResponse = await client.get(`${baseUrl}/api/auth/csrf`);
   const csrfToken = csrfResponse.data.csrfToken;
 
-  CliUx.ux.log('Signing into HyperPlay API with:', signer.address);
+  CliUx.ux.action.start('Signing into HyperPlay API with:', signer.address);
   const siweMessage = new SiweMessage({
     domain: new URL(baseUrl).host,
     address: signer.address,
@@ -59,6 +59,7 @@ export async function loginAndPublish(client: AxiosInstance, cookieJar: CookieJa
       'Content-Type': 'application/x-www-form-urlencoded'
     },
   });
+  CliUx.ux.action.stop();
 
   CliUx.ux.log('Fetching listing release branches');
   const channels = (await client.get<{ channel_id: number, channel_name: string }[]>(`${baseUrl}/api/v1/channels?project_id=${projectID}`)).data;
@@ -67,9 +68,7 @@ export async function loginAndPublish(client: AxiosInstance, cookieJar: CookieJa
   const releaseChannel = channels.find((channel) => targetChannel === channel.channel_name);
 
   CliUx.ux.log('Submitting release for review');
-  const url = `${baseUrl}/api/v1/reviews/release`;
-  console.log({ url, channel_id: releaseChannel?.channel_id });
-  await client.post(url, {
+  await client.post(`${baseUrl}/api/v1/reviews/release`, {
     path,
     channel_id: releaseChannel?.channel_id,
   });
