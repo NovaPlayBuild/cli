@@ -19,6 +19,12 @@ export const metaTx = Flags.boolean({
   default: true,
 });
 
+export const release = Flags.string({
+  description: 'Release name/version',
+  env: 'HYPERPLAY_RELEASE',
+  default: '',
+});
+
 async function parseNetwork(network: string) {
   switch (network) {
     case 'polygon':
