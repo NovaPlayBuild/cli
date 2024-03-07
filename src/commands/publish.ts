@@ -5,6 +5,10 @@ import YAML from 'yaml';
 import * as fs from 'node:fs';
 import * as flags from '../flags';
 import { select } from '../keys';
+import { CookieJar } from 'tough-cookie';
+import axios from 'axios';
+import { wrapper } from 'axios-cookiejar-support';
+import { loginAndPublish } from '../api';
 import { uploadRelease } from '../releases';
 
 export default class Publish extends Command {
@@ -65,6 +69,11 @@ export default class Publish extends Command {
     const privateKey = flags['private-key'] || await select();
     const metaTx = flags['meta-tx'];
 
+    const apiURL = 'https://developers.hyperplay.xyz'
+    const wallet = new ethers.Wallet(privateKey);
+    const cookieJar = new CookieJar();
+    const apiClient = wrapper(axios.create({ jar: cookieJar, withCredentials: true, baseURL: apiURL }));
+
     const provider = await this.provider(flags.network, privateKey);
     const valist = await create(provider, { metaTx });
 
@@ -90,7 +99,6 @@ export default class Publish extends Command {
     CliUx.ux.action.start('uploading files');
     const release = await uploadRelease(valist, config);
     CliUx.ux.action.stop();
-
     CliUx.ux.log(`successfully uploaded files to IPFS: ${release.external_url}`);
 
     CliUx.ux.action.start('publishing release');
@@ -101,8 +109,12 @@ export default class Publish extends Command {
     await tx.wait();
     CliUx.ux.action.stop();
 
-    CliUx.ux.log(`successfully published ${config.account}/${config.project}/${config.release}!`);
+    await loginAndPublish(
+      apiClient, cookieJar, wallet, apiURL, projectID,
+      `${config.account}/${config.project}/${config.release}`
+    );
 
+    CliUx.ux.log(`Successfully published ${config.account}/${config.project}/${config.release}!`);
     CliUx.ux.log(`view the release at:
     https://developers.hyperplay.xyz/${config.account}/${config.project}/settings
     ${release.external_url}
