@@ -25,6 +25,7 @@ export default class Publish extends Command {
     'meta-tx': flags.metaTx,
     'network': flags.network,
     'private-key': flags.privateKey,
+    'release': flags.release,
   }
 
   static args = [
@@ -59,12 +60,15 @@ export default class Publish extends Command {
       config = YAML.parse(data);
     }
 
+    if (flags['release']) config.release = flags['release'];
+
     if (!config.account) this.error('invalid account name');
     if (!config.project) this.error('invalid project name');
     if (!config.release) this.error('invalid release name');
     if (!config.platforms) this.error('no platforms configured');
 
-    console.log({ platforms: config.platforms });
+    const fullReleaseName = `${config.account}/${config.project}/${config.release}`;
+    console.log('Publishing', { platforms: config.platforms }, `as ${fullReleaseName}`);
 
     const privateKey = flags['private-key'] || await select();
     const metaTx = flags['meta-tx'];
@@ -111,7 +115,7 @@ export default class Publish extends Command {
 
     await loginAndPublish(
       apiClient, cookieJar, wallet, apiURL, projectID,
-      `${config.account}/${config.project}/${config.release}`
+      fullReleaseName
     );
 
     CliUx.ux.log(`Successfully published ${config.account}/${config.project}/${config.release}!`);
