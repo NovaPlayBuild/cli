@@ -29,7 +29,8 @@ export default class Publish extends Command {
     'web': flags.web,
     'darwin_amd64': flags.darwin_amd64,
     'darwin_arm64': flags.darwin_arm64,
-    'windows_amd64': flags.windows_amd64
+    'windows_amd64': flags.windows_amd64,
+    'skip_hyperplay_publish': flags.skip_hyperplay_publish
   }
 
   static args = [
@@ -97,10 +98,8 @@ export default class Publish extends Command {
     const privateKey = flags['private-key'] || await select();
     const metaTx = flags['meta-tx'];
 
-    const apiURL = 'https://developers.hyperplay.xyz'
     const wallet = new ethers.Wallet(privateKey);
     const cookieJar = Publish.cookieJar ?? new CookieJar();
-    const apiClient = wrapper(axios.create({ jar: cookieJar, withCredentials: true, baseURL: apiURL }));
 
     const provider = await this.provider(flags.network, privateKey);
     const valist = await create(provider, { metaTx });
@@ -137,17 +136,23 @@ export default class Publish extends Command {
     await tx.wait();
     CliUx.ux.action.stop();
 
-    await loginAndPublish(
-      apiClient, cookieJar, wallet, apiURL, projectID,
-      fullReleaseName
-    );
+    // Publish to HyperPlay
+    if (!flags['skip_hyperplay_publish']){
+      const apiURL = 'https://developers.hyperplay.xyz'
+      const apiClient = wrapper(axios.create({ jar: cookieJar, withCredentials: true, baseURL: apiURL }));
+      await loginAndPublish(
+        apiClient, cookieJar, wallet, apiURL, projectID,
+        fullReleaseName
+      );
+    }
 
     CliUx.ux.log(`Successfully published ${config.account}/${config.project}/${config.release}!`);
-    CliUx.ux.log(`view the release at:
-    https://developers.hyperplay.xyz/${config.account}/${config.project}/settings
-    ${release.external_url}
-    ipfs://${release.external_url.replace('https://gateway.valist.io/ipfs/', '')}
-    `);
+    let releaseText = 'view the release at:\n'
+    if (!flags['skip_hyperplay_publish'])
+      releaseText += `https://developers.hyperplay.xyz/${config.account}/${config.project}/settings\n`
+    releaseText += release.external_url + '\n'
+    releaseText += `ipfs://${release.external_url.replace('https://gateway.valist.io/ipfs/', '')}\n`
+    CliUx.ux.log(releaseText);
 
     this.exit(0);
   }

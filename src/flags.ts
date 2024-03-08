@@ -77,3 +77,9 @@ export const android_arm64 = Flags.string({
   env: 'HYPERPLAY_ANDROID_AMD64_BUILD',
   default: ''
 });
+
+export const skip_hyperplay_publish = Flags.boolean({
+  description: 'Do not publish to HyperPlay. Only Valist.',
+  allowNo: true,
+  default: false,
+});
