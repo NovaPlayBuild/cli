@@ -1,7 +1,7 @@
 import Publish from '../../src/commands/publish';
 import { ethers } from 'ethers';
 import { expect } from 'chai';
-import { contracts, create, AccountMeta, ProjectMeta, ReleaseMeta } from '@valist/sdk';
+import { contracts, create, AccountMeta, ProjectMeta } from '@valist/sdk';
 import nock from 'nock'
 import { CookieJar } from 'tough-cookie';
 import ganache from 'ganache'
@@ -14,7 +14,7 @@ const web3 = ganache.provider({ wallet: { deterministic: true },
     } 
 });
 
-// @ts-ignore
+// @ts-expect-error type mismatch
 const provider = new ethers.providers.Web3Provider(web3);
 const signer = provider.getSigner();
 
@@ -54,7 +54,7 @@ describe('publish CLI command', () => {
         await createProjectTx.wait();
 
         const url = 'https://developers.hyperplay.xyz'
-        const mockHPReviewPost = nock(url)
+        nock(url)
             .get('/api/auth/session')
             .reply(200, {})
             .get('/api/auth/csrf')
@@ -86,6 +86,7 @@ describe('publish CLI command', () => {
                 '--private-key=4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d',
                 '--no-meta-tx'
             ]);
+        /* eslint-disable-next-line */
         } catch (e: any) {
             if (e.oclif === undefined || e.oclif.exit !== 0) throw e;
         }
