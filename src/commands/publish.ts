@@ -1,6 +1,6 @@
 import { Command, CliUx } from '@oclif/core';
 import { ethers } from 'ethers';
-import { create, ReleaseConfig } from '@valist/sdk';
+import { create, ReleaseConfig, SupportedPlatform } from '@valist/sdk';
 import YAML from 'yaml';
 import * as fs from 'node:fs';
 import * as flags from '../flags';
@@ -13,6 +13,7 @@ import { uploadRelease } from '../releases';
 
 export default class Publish extends Command {
   static provider?: ethers.Signer;
+  static cookieJar?: CookieJar
 
   static description = 'Publish a release'
 
@@ -25,18 +26,28 @@ export default class Publish extends Command {
     'meta-tx': flags.metaTx,
     'network': flags.network,
     'private-key': flags.privateKey,
-    'release': flags.release,
+    'web': flags.web,
+    'darwin_amd64': flags.darwin_amd64,
+    'darwin_arm64': flags.darwin_arm64,
+    'windows_amd64': flags.windows_amd64
   }
 
   static args = [
     {
-      name: 'package',
-      description: 'package name',
+      name: 'account',
+      description: 'account name',
+      required: false
     },
     {
-      name: 'path',
-      description: 'path to artifact file or directory',
+      name: 'project',
+      description: 'project name',
+      required: false
     },
+    {
+      name: 'release',
+      description: 'release name',
+      required: false
+    }
   ]
 
   async provider(network: string, privateKey: string): Promise<ethers.Signer> {
@@ -46,26 +57,39 @@ export default class Publish extends Command {
     return new ethers.Wallet(privateKey, provider);
   }
 
-  public async run(): Promise<void> {
+  async parseConfig(){
+    // ts having issues passing these as args so duplicating the parse here
     const { args, flags } = await this.parse(Publish);
 
     let config: ReleaseConfig;
-    if (args.package) {
-      const parts = args.package.split('/');
-      if (parts.length !== 3) this.error('invalid package name');
-      config = new ReleaseConfig(parts[0], parts[1], parts[2]);
-      if (args.path) config.platforms['web'] = args.path;
-    } else {
+    if (args.account && args.project && args.release) {
+      config = new ReleaseConfig(args.account, args.project, args.release);
+      const platformFlags: SupportedPlatform[] = ["web", "darwin_amd64", "darwin_arm64", "linux_amd64", "linux_arm64", "windows_amd64", "windows_arm64", "android_arm64"]
+      for (const platform of platformFlags){
+        if (flags[platform])
+          config.platforms[platform] = flags[platform]
+      }
+      
+    } else if(fs.existsSync('hyperplay.yml')){
       const data = fs.readFileSync('hyperplay.yml', 'utf8');
       config = YAML.parse(data);
     }
-
-    if (flags['release']) config.release = flags['release'];
+    else {
+      this.error('Account, project, and release were not supplied and hyperplay.yml does not exist')
+    }
 
     if (!config.account) this.error('invalid account name');
     if (!config.project) this.error('invalid project name');
     if (!config.release) this.error('invalid release name');
     if (!config.platforms) this.error('no platforms configured');
+
+    return config
+  }
+
+  // if no args are passed, use the yml
+  public async run(): Promise<void> {
+    const { flags } = await this.parse(Publish);
+    const config = await this.parseConfig()
 
     const fullReleaseName = `${config.account}/${config.project}/${config.release}`;
     console.log('Publishing', { platforms: config.platforms }, `as ${fullReleaseName}`);
@@ -75,7 +99,7 @@ export default class Publish extends Command {
 
     const apiURL = 'https://developers.hyperplay.xyz'
     const wallet = new ethers.Wallet(privateKey);
-    const cookieJar = new CookieJar();
+    const cookieJar = Publish.cookieJar ?? new CookieJar();
     const apiClient = wrapper(axios.create({ jar: cookieJar, withCredentials: true, baseURL: apiURL }));
 
     const provider = await this.provider(flags.network, privateKey);
