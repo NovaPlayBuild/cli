@@ -54,7 +54,7 @@ export default class Publish extends Command {
       const parts = args.package.split('/');
       if (parts.length !== 3) this.error('invalid package name');
       config = new ReleaseConfig(parts[0], parts[1], parts[2]);
-      config.platforms['web'] = args.path;
+      if (args.path) config.platforms['web'] = args.path;
     } else {
       const data = fs.readFileSync('hyperplay.yml', 'utf8');
       config = YAML.parse(data);
