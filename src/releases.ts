@@ -6,6 +6,7 @@ import path from 'path';
 import { zipDirectory } from './zip';
 
 export async function uploadRelease(valist: Client, config: ReleaseConfig) {
+  /* eslint-disable-next-line */
   const platformEntries = Object.entries(config.platforms).filter(([_key, value]) => value !== "");
 
   const updatedPlatformEntries = await Promise.all(platformEntries.map(async ([platform, filePath]) => {

@@ -7,6 +7,7 @@ import { CliUx } from '@oclif/core';
 
 async function logCookiesAndCheckCsrf(cookieJar: CookieJar, baseUrl: string): Promise<string | null> {
   const cookies = await new Promise<string>((resolve, reject) => {
+    /* eslint-disable-next-line */
     cookieJar.getCookies(baseUrl, (err: any, cookies: any[]) => {
       if (err) reject(err);
       else resolve(cookies.join('; '));
