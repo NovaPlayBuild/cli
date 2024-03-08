@@ -3,9 +3,16 @@ import { Client, ReleaseConfig, ReleaseMeta } from "@valist/sdk";
 import { PlatformsMetaInterface } from '@valist/sdk/dist/typesShared';
 import fs from 'fs';
 import path from 'path';
+import { zipDirectory } from './zip';
 
 export async function uploadRelease(valist: Client, config: ReleaseConfig) {
   const platformEntries = Object.entries(config.platforms).filter(([_key, value]) => value !== "");
+
+  const updatedPlatformEntries = await Promise.all(platformEntries.map(async ([platform, filePath]) => {
+    const zipPath = `./${path.basename(filePath)}.zip`;
+    await zipDirectory(filePath, zipPath);
+    return [platform, zipPath] as [string, string];
+  }));
 
   const meta: ReleaseMeta = {
     _metadata_version: "2",
@@ -16,11 +23,10 @@ export async function uploadRelease(valist: Client, config: ReleaseConfig) {
     platforms: {},
   };
 
-  const platformIC = platformEntries.map(([platformName, filePath]) => {
-    const content = fs.createReadStream(filePath);
-    const fileName = path.basename(filePath);
+  const platformIC = updatedPlatformEntries.map(([platformName, zipPath]) => {
+    const content = fs.createReadStream(zipPath);
     return {
-      path: `${platformName}/${fileName}`,
+      path: `${platformName}/${path.basename(zipPath)}`,
       content,
     };
   });
@@ -33,16 +39,15 @@ export async function uploadRelease(valist: Client, config: ReleaseConfig) {
     },
   );
 
-  for (const [platformName, filePath] of platformEntries) {
-    const fileName = path.basename(filePath);
-    const stats = await fs.promises.stat(filePath);
+  for (const [platformName, zipPath] of updatedPlatformEntries) {
+    const stats = await fs.promises.stat(zipPath);
     const fileSize = stats.size;
 
     meta.platforms[platformName as keyof PlatformsMetaInterface] = {
-      name: fileName,
-      external_url: `${meta.external_url}/${platformName}/${fileName}`,
+      name: path.basename(zipPath),
+      external_url: `${meta.external_url}/${platformName}/${path.basename(zipPath)}`,
       downloadSize: fileSize.toString(),
-      installSize: fileSize.toString(),
+      installSize: fileSize.toString(), // Adjust this if necessary
     };
   }
   return meta;
