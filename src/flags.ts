@@ -82,4 +82,5 @@ export const skip_hyperplay_publish = Flags.boolean({
   description: 'Do not publish to HyperPlay. Only Valist.',
   allowNo: true,
   default: false,
+  env: 'HYPERPLAY_SKIP_HYPERPLAY_PUBLISH'
 });
