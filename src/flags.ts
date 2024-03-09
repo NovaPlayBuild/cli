@@ -84,3 +84,9 @@ export const skip_hyperplay_publish = Flags.boolean({
   default: false,
   env: 'HYPERPLAY_SKIP_HYPERPLAY_PUBLISH'
 });
+
+export const channel = Flags.string({
+  description: 'Publish build to this release channel on HyperPlay.',
+  default: 'main',
+  env: 'HYPERPLAY_TARGET_CHANNEL'
+});

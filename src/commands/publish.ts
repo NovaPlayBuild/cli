@@ -30,7 +30,8 @@ export default class Publish extends Command {
     'darwin_amd64': flags.darwin_amd64,
     'darwin_arm64': flags.darwin_arm64,
     'windows_amd64': flags.windows_amd64,
-    'skip_hyperplay_publish': flags.skip_hyperplay_publish
+    'skip_hyperplay_publish': flags.skip_hyperplay_publish,
+    'channel': flags.channel
   }
 
   static args = [
@@ -141,8 +142,13 @@ export default class Publish extends Command {
       const apiURL = 'https://developers.hyperplay.xyz'
       const apiClient = wrapper(axios.create({ jar: cookieJar, withCredentials: true, baseURL: apiURL }));
       await loginAndPublish(
-        apiClient, cookieJar, wallet, apiURL, projectID,
-        fullReleaseName
+        apiClient, 
+        cookieJar, 
+        wallet, 
+        apiURL, 
+        projectID,
+        fullReleaseName,
+        flags['channel']
       );
     }
 

@@ -20,7 +20,7 @@ async function logCookiesAndCheckCsrf(cookieJar: CookieJar, baseUrl: string): Pr
   return csrfToken;
 }
 
-export async function loginAndPublish(client: AxiosInstance, cookieJar: CookieJar, signer: ethers.Wallet, baseUrl: string, projectID: string, path: string) {
+export async function loginAndPublish(client: AxiosInstance, cookieJar: CookieJar, signer: ethers.Wallet, baseUrl: string, projectID: string, path: string, targetChannel: string) {
   await client.get(`${baseUrl}/api/auth/session`);
 
   const hasCsrfToken = await logCookiesAndCheckCsrf(cookieJar, baseUrl);
@@ -65,7 +65,6 @@ export async function loginAndPublish(client: AxiosInstance, cookieJar: CookieJa
   CliUx.ux.log('Fetching listing release branches');
   const channels = (await client.get<{ channel_id: number, channel_name: string }[]>(`${baseUrl}/api/v1/channels?project_id=${projectID}`)).data;
 
-  const targetChannel = 'main';
   const releaseChannel = channels.find((channel) => targetChannel === channel.channel_name);
 
   CliUx.ux.log('Submitting release for review');
