@@ -50,7 +50,7 @@ export const darwin_arm64 = Flags.string({
 
 export const windows_arm64 = Flags.string({
   description: 'Path to windows arm64 build',
-  env: 'HYPERPLAY_WINDOWS_AMD64_BUILD',
+  env: 'HYPERPLAY_WINDOWS_ARM64_BUILD',
   default: ''
 });
 
@@ -68,7 +68,7 @@ export const linux_amd64 = Flags.string({
 
 export const linux_arm64 = Flags.string({
   description: 'Path to linux amd64 build',
-  env: 'HYPERPLAY_LINUX_AMD64_BUILD',
+  env: 'HYPERPLAY_LINUX_ARM64_BUILD',
   default: ''
 });
 
