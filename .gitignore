@@ -7,3 +7,8 @@
 /yarn.lock
 node_modules
 oclif.manifest.json
+mac_amd64.zip
+mac_arm64.zip
+mac_x64.zip
+web.zip
+windows_amd64.zip
