@@ -1,0 +1,57 @@
+# This is just used for testing
+account: valist
+project: cli
+release: v0.0.2
+
+platforms:
+  darwin_arm64_dmg: 
+    path: ./test/mock_data/HyperPlay-0.12.0-macOS-arm64.dmg 
+    zip: false
+  darwin_arm64_dmg_blockmap: 
+    path: ./test/mock_data/HyperPlay-0.12.0-macOS-arm64.dmg.blockmap 
+    zip: false
+  darwin_arm64_dmg_zip: 
+    path: ./test/mock_data/HyperPlay-0.12.0-macOS-arm64.zip 
+    zip: false
+  darwin_arm64_dmg_zip_blockmap: 
+    path: ./test/mock_data/HyperPlay-0.12.0-macOS-arm64.zip.blockmap 
+    zip: false
+  darwin_amd64_dmg: 
+    path: ./test/mock_data/HyperPlay-0.12.0-macOS-x64.dmg 
+    zip: false
+  darwin_amd64_dmg_blockmap: 
+    path: ./test/mock_data/HyperPlay-0.12.0-macOS-x64.dmg.blockmap 
+    zip: false
+  darwin_amd64_dmg_zip: 
+    path: ./test/mock_data/HyperPlay-0.12.0-macOS-x64.zip 
+    zip: false
+  darwin_amd64_dmg_zip_blockmap: 
+    path: ./test/mock_data/HyperPlay-0.12.0-macOS-x64.zip.blockmap 
+    zip: false
+  windows_amd64_exe: 
+    path: ./test/mock_data/HyperPlay-0.12.0-Setup-x64.exe 
+    zip: false
+  windows_amd64_exe_blockmap: 
+    path: ./test/mock_data/HyperPlay-0.12.0-Setup-x64.exe.blockmap 
+    zip: false
+  linux_pacman: 
+    path: ./test/mock_data/hyperplay-0.12.0.pacman 
+    zip: false
+  linux_tarxz: 
+    path: ./test/mock_data/hyperplay-0.12.0.tar.xz 
+    zip: false
+  linux_rpm: 
+    path: ./test/mock_data/hyperplay-0.12.0.x86_64.rpm 
+    zip: false
+  linux_deb: 
+    path: ./test/mock_data/hyperplay_0.12.0_amd64.deb 
+    zip: false
+  latest_linux_yml: 
+    path: ./test/mock_data/latest-linux.yml 
+    zip: false
+  latest_mac_yml: 
+    path: ./test/mock_data/latest-mac.yml 
+    zip: false
+  latest_windows_yml: 
+    path: ./test/mock_data/latest.yml 
+    zip: false

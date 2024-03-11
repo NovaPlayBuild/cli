@@ -1,8 +1,6 @@
 import { Command, CliUx } from '@oclif/core';
 import { ethers } from 'ethers';
-import { create, ReleaseConfig, SupportedPlatform } from '@valist/sdk';
-import YAML from 'yaml';
-import * as fs from 'node:fs';
+import { create } from '@valist/sdk';
 import * as flags from '../flags';
 import { select } from '../keys';
 import { CookieJar } from 'tough-cookie';
@@ -10,6 +8,8 @@ import axios from 'axios';
 import { wrapper } from 'axios-cookiejar-support';
 import { loginAndPublish } from '../api';
 import { uploadRelease } from '../releases';
+import { parseYml } from '../yml';
+import { FlagOutput } from '@oclif/core/lib/interfaces';
 
 export default class Publish extends Command {
   static provider?: ethers.Signer;
@@ -31,7 +31,9 @@ export default class Publish extends Command {
     'darwin_arm64': flags.darwin_arm64,
     'windows_amd64': flags.windows_amd64,
     'skip_hyperplay_publish': flags.skip_hyperplay_publish,
-    'channel': flags.channel
+    'channel': flags.channel,
+    'useYml': flags.useYml,
+    'ymlPath': flags.ymlPath
   }
 
   static args = [
@@ -59,39 +61,26 @@ export default class Publish extends Command {
     return new ethers.Wallet(privateKey, provider);
   }
 
-  async parseConfig(){
-    // ts having issues passing these as args so duplicating the parse here
-    const { args, flags } = await this.parse(Publish);
-
-    let config: ReleaseConfig;
-    if (args.account && args.project && args.release) {
-      config = new ReleaseConfig(args.account, args.project, args.release);
-      const platformFlags: SupportedPlatform[] = ["web", "darwin_amd64", "darwin_arm64", "linux_amd64", "linux_arm64", "windows_amd64", "windows_arm64", "android_arm64"]
-      for (const platform of platformFlags){
-        if (flags[platform])
-          config.platforms[platform] = flags[platform]
-      }
-      
-    } else if(fs.existsSync('hyperplay.yml')){
-      const data = fs.readFileSync('hyperplay.yml', 'utf8');
-      config = YAML.parse(data);
-    }
-    else {
+/* eslint-disable-next-line */
+  async parseConfig(args: {[name: string]: any;}, flags: FlagOutput){
+    const parsed = parseYml(args, flags)
+    if (parsed === undefined){
       this.error('Account, project, and release were not supplied and hyperplay.yml does not exist')
     }
 
+    const {config, yamlConfig} = parsed;
     if (!config.account) this.error('invalid account name');
     if (!config.project) this.error('invalid project name');
     if (!config.release) this.error('invalid release name');
     if (!config.platforms) this.error('no platforms configured');
 
-    return config
+    return {config, yamlConfig}
   }
 
   // if no args are passed, use the yml
   public async run(): Promise<void> {
-    const { flags } = await this.parse(Publish);
-    const config = await this.parseConfig()
+    const { args, flags } = await this.parse(Publish);
+    const {config, yamlConfig} = await this.parseConfig(args, flags)
 
     const fullReleaseName = `${config.account}/${config.project}/${config.release}`;
     console.log('Publishing', { platforms: config.platforms }, `as ${fullReleaseName}`);
@@ -125,7 +114,7 @@ export default class Publish extends Command {
     }
 
     CliUx.ux.action.start('uploading files');
-    const release = await uploadRelease(valist, config);
+    const release = await uploadRelease(valist, config, yamlConfig);
     CliUx.ux.action.stop();
     CliUx.ux.log(`successfully uploaded files to IPFS: ${release.external_url}`);
 

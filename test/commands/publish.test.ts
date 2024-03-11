@@ -117,7 +117,8 @@ describe('publish CLI command', () => {
     it('should create a release with the publish command and the hyperplay.yml file', async function () {
         const publishArgs = [
             '--private-key=4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d',
-            '--no-meta-tx'
+            '--no-meta-tx',
+            '--ymlPath=./test/mock_data/hyperplay.yml'
         ]
         await runPublishCommandWithMockData('v0.0.2', publishArgs)
     });
