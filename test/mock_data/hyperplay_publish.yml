@@ -5,7 +5,7 @@ release: v0.0.3
 
 platforms:
 # unzipped file
-  darwin_amd64_dmg: 
+  HyperPlay-0.12.0-macOS-arm64.dmg: 
     path: ./test/mock_data/dmg.txt
     zip: false
   darwin_arm64_dmg_zip_blockmap: 
