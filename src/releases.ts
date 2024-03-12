@@ -4,12 +4,16 @@ import { PlatformsMetaInterface } from '@valist/sdk/dist/typesShared';
 import fs from 'fs';
 import path from 'path';
 import { zipDirectory } from './zip';
+import { YamlConfig } from './types';
 
-export async function uploadRelease(valist: Client, config: ReleaseConfig) {
+export async function uploadRelease(valist: Client, config: ReleaseConfig, yamlConfig?: YamlConfig) {
   /* eslint-disable-next-line */
   const platformEntries = Object.entries(config.platforms).filter(([_key, value]) => value !== "");
 
   const updatedPlatformEntries = await Promise.all(platformEntries.map(async ([platform, filePath]) => {
+    if (yamlConfig && yamlConfig.platforms[platform] && !yamlConfig.platforms[platform].zip) {
+      return [platform, filePath]
+    }
     const zipPath = `./${path.basename(filePath)}.zip`;
     await zipDirectory(filePath, zipPath);
     return [platform, zipPath] as [string, string];

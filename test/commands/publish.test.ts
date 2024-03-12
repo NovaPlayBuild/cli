@@ -21,6 +21,7 @@ const signer = provider.getSigner();
 const Registry = new ethers.ContractFactory(contracts.registryABI, contracts.registryBytecode, signer);
 const License = new ethers.ContractFactory(contracts.licenseABI, contracts.licenseBytecode, signer);
 
+// publishing unzipped folder is not supported only zipped or unzipped files 
 describe('publish CLI command', () => {
     let valist: Client
     let members: string[] = []
@@ -90,11 +91,7 @@ describe('publish CLI command', () => {
         const releaseExists = await valist.releaseExists(releaseID);
         expect(releaseExists).to.be.true;
         const releaseMeta = await valist.getReleaseMeta(releaseID);
-        const platformKeys = Object.keys(releaseMeta.platforms)
-        expect(platformKeys.includes('web')).true
-        expect(platformKeys.includes('darwin_amd64')).true
-        expect(platformKeys.includes('darwin_arm64')).true
-        expect(platformKeys.includes('windows_amd64')).true
+        return releaseMeta
     }
 
     it('should create a release with the publish command cli args', async function () {
@@ -111,14 +108,35 @@ describe('publish CLI command', () => {
             '--private-key=4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d',
             '--no-meta-tx'
         ]
-        await runPublishCommandWithMockData(releaseVersion, publishArgs)
+        const releaseMeta = await runPublishCommandWithMockData(releaseVersion, publishArgs)
+        const platformKeys = Object.keys(releaseMeta.platforms)
+        expect(platformKeys.includes('web')).true
+        expect(platformKeys.includes('darwin_amd64')).true
+        expect(platformKeys.includes('darwin_arm64')).true
+        expect(platformKeys.includes('windows_amd64')).true
     });
 
     it('should create a release with the publish command and the hyperplay.yml file', async function () {
         const publishArgs = [
             '--private-key=4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d',
-            '--no-meta-tx'
+            '--no-meta-tx',
+            '--yml-path=./test/mock_data/hyperplay.yml'
         ]
-        await runPublishCommandWithMockData('v0.0.2', publishArgs)
+        const releaseMeta = await runPublishCommandWithMockData('v0.0.2', publishArgs)
+        const platformKeys = Object.keys(releaseMeta.platforms)
+        expect(platformKeys.includes('web')).true
+        expect(platformKeys.includes('darwin_amd64')).true
+        expect(platformKeys.includes('darwin_arm64')).true
+        expect(platformKeys.includes('windows_amd64')).true
     });
+
+    it('should create a release with custom keys and some files and folders not zipped', async function(){
+        const publishArgs = [
+            '--private-key=4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d',
+            '--no-meta-tx',
+            '--yml-path=./test/mock_data/hyperplay_publish.yml'
+        ]
+        const releaseMeta = await runPublishCommandWithMockData('v0.0.3', publishArgs)
+        console.log('release meta ', releaseMeta)
+    })
 })

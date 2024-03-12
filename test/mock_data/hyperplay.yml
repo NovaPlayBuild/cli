@@ -1,0 +1,19 @@
+# This is just used for testing
+account: valist
+project: cli
+release: v0.0.2
+
+platforms:
+  darwin_amd64: 
+    path: ./mock_data/mac_x64
+    zip: true
+  darwin_arm64: 
+    path: ./mock_data/mac_arm64
+    zip: true
+  windows_amd64: 
+    path: ./mock_data/windows_amd64
+    zip: true
+  web: 
+    path: ./mock_data/web
+    zip: true
+    

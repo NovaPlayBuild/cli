@@ -1,0 +1,21 @@
+# This is just used for testing
+account: valist
+project: cli
+release: v0.0.3
+
+platforms:
+# unzipped file
+  HyperPlay-0.12.0-macOS-arm64.dmg: 
+    path: ./test/mock_data/dmg.txt
+    zip: false
+  darwin_arm64_dmg_zip_blockmap: 
+    path: ./test/mock_data/mac_arm64
+    zip: true
+# zipped folder
+  linux_tarxz: 
+    path: ./test/mock_data/windows_amd64
+    zip: true
+  latest_mac_yml: 
+    path: ./test/mock_data/web
+    zip: true
+    
