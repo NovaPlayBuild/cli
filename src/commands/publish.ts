@@ -32,8 +32,8 @@ export default class Publish extends Command {
     'windows_amd64': flags.windows_amd64,
     'skip_hyperplay_publish': flags.skip_hyperplay_publish,
     'channel': flags.channel,
-    'useYml': flags.useYml,
-    'ymlPath': flags.ymlPath
+    'use-yml': flags.useYml,
+    'yml-path': flags.ymlPath
   }
 
   static args = [
