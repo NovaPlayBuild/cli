@@ -8,10 +8,10 @@ import { FlagOutput } from "@oclif/core/lib/interfaces";
 export function parseYml(args: {[name: string]: any;}, flags: FlagOutput): {config: ReleaseConfig, yamlConfig: YamlConfig | undefined} | undefined{
     let config: ReleaseConfig;
     let yamlConfig: YamlConfig | undefined = undefined;
-    const flagPath = flags['ymlPath']
+    const flagPath = flags['yml-path']
     const ymlPath = flagPath ? flagPath : 'hyperplay.yml'
     // cli args and flags
-    if (args.account && args.project && args.release && !flags['useYml']) {
+    if (args.account && args.project && args.release && !flags['use-yml']) {
       config = new ReleaseConfig(args.account, args.project, args.release);
       const platformFlags: SupportedPlatform[] = ["web", "darwin_amd64", "darwin_arm64", "linux_amd64", "linux_arm64", "windows_amd64", "windows_arm64", "android_arm64"]
       for (const platform of platformFlags){

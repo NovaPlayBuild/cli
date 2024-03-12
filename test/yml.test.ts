@@ -9,8 +9,8 @@ describe('YML Tests', ()=>{
             release: 'v0.12.0'
         }
         const flags = {
-            useYml: true,
-            ymlPath: './test/mock_data/hyperplay.yml'
+            "use-yml": true,
+            "yml-path": './test/mock_data/hyperplay.yml'
         }
         const parsed = parseYml(args, flags)
         if (parsed === undefined){
@@ -31,8 +31,8 @@ describe('YML Tests', ()=>{
             release: 'v0.12.0'
         }
         const flags = {
-            useYml: true,
-            ymlPath: './test/mock_data/hyperplay_client.yml'
+            "use-yml": true,
+            "yml-path": './test/mock_data/hyperplay_client.yml'
         }
         const parsed = parseYml(args, flags)
         if (parsed === undefined){
