@@ -5,6 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import { zipDirectory } from './zip';
 import { YamlConfig } from './types';
+import { getZipName } from './utils/getZipName';
 
 export async function uploadRelease(valist: Client, config: ReleaseConfig, yamlConfig?: YamlConfig) {
   /* eslint-disable-next-line */
@@ -14,8 +15,10 @@ export async function uploadRelease(valist: Client, config: ReleaseConfig, yamlC
     if (yamlConfig && yamlConfig.platforms[platform] && !yamlConfig.platforms[platform].zip) {
       return [platform, filePath]
     }
-    const zipPath = `./${path.basename(filePath)}.zip`;
+    const zipPath = getZipName(filePath);
+    CliUx.ux.action.start(`zipping ${filePath}`);
     await zipDirectory(filePath, zipPath);
+    CliUx.ux.action.stop();
     return [platform, zipPath] as [string, string];
   }));
 
@@ -36,6 +39,7 @@ export async function uploadRelease(valist: Client, config: ReleaseConfig, yamlC
     };
   });
 
+  CliUx.ux.action.start('uploading files');
   meta.external_url = await valist.writeFolder(
     platformIC,
     true,
@@ -43,6 +47,7 @@ export async function uploadRelease(valist: Client, config: ReleaseConfig, yamlC
       CliUx.ux.log(`Uploading ${bytes}`);
     },
   );
+  CliUx.ux.action.stop();
 
   for (const [platformName, zipPath] of updatedPlatformEntries) {
     const stats = await fs.promises.stat(zipPath);
