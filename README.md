@@ -6,8 +6,9 @@ HyperPlay command line interface.
 * [HyperPlay CLI](#hyperplay-cli)
 * [Install](#install)
 * [Usage](#usage)
-  * [Flags and Environment Variables](#flags-and-environment-variables)
-  * [YML](#yml)
+  * [Publish](#publish)
+    * [Flags and Environment Variables](#flags-and-environment-variables)
+    * [YML](#yml)
 * [Commands](#commands)
 * [FAQ](#faq)
 <!-- tocstop -->
@@ -37,7 +38,11 @@ USAGE
 ...
 ```
 
-## Flags and Environment Variables
+## Publish
+
+The `publish` command args and flags can be passed as CLI args or with a YML file.
+
+### Flags and Environment Variables
 ```bash
 $ hyperplay publish [ACCOUNT] [PROJECT] [RELEASE] [--meta-tx] [--network <value>] [--private-key <value>] [--web <value>]
     [--darwin_amd64 <value>] [--darwin_arm64 <value>] [--windows_amd64 <value>] [--skip_hyperplay_publish] [--channel <value>]
@@ -59,7 +64,7 @@ HYPERPLAY_SKIP_HYPERPLAY_PUBLISH=false
 HYPERPLAY_TARGET_CHANNEL=beta
 ```
 
-## YML
+### YML
 Create a `hyperplay.yml` in your project folder.
 
 `zip` is true if you want to zip the folder or file prior to upload.
