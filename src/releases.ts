@@ -1,25 +1,31 @@
 import { CliUx } from '@oclif/core';
-import { Client, ReleaseConfig, ReleaseMeta } from "@valist/sdk";
+import { Client, ReleaseMeta } from "@valist/sdk";
 import { PlatformsMetaInterface } from '@valist/sdk/dist/typesShared';
 import fs from 'fs';
 import path from 'path';
 import { zipDirectory } from './zip';
-import { YamlConfig } from './types';
+import { ReleaseConfig } from './types';
 import { getZipName } from './utils/getZipName';
 
-export async function uploadRelease(valist: Client, config: ReleaseConfig, yamlConfig?: YamlConfig) {
-  /* eslint-disable-next-line */
-  const platformEntries = Object.entries(config.platforms).filter(([_key, value]) => value !== "");
+interface PlatformEntry {
+  platform: string
+  path: string
+  installScript: string
+  executable: string
+}
 
-  const updatedPlatformEntries = await Promise.all(platformEntries.map(async ([platform, filePath]) => {
-    if (yamlConfig && yamlConfig.platforms[platform] && !yamlConfig.platforms[platform].zip) {
-      return [platform, filePath]
+export async function uploadRelease(valist: Client, config: ReleaseConfig) {
+  const updatedPlatformEntries: PlatformEntry[] = await Promise.all(Object.entries(config.platforms).map(async ([platform, platformConfig]) => {
+    const installScript = platformConfig.installScript;
+    const executable = platformConfig.executable;
+    if (config && config.platforms[platform] && !config.platforms[platform].zip) {
+      return {platform, path: platformConfig.path, installScript, executable}
     }
-    const zipPath = getZipName(filePath);
+    const zipPath = getZipName(platformConfig.path);
     CliUx.ux.action.start(`zipping ${zipPath}`);
-    await zipDirectory(filePath, zipPath);
+    await zipDirectory(platformConfig.path, zipPath);
     CliUx.ux.action.stop();
-    return [platform, zipPath] as [string, string];
+    return {platform, path: zipPath, installScript, executable};
   }));
 
   const meta: ReleaseMeta = {
@@ -31,7 +37,7 @@ export async function uploadRelease(valist: Client, config: ReleaseConfig, yamlC
     platforms: {},
   };
 
-  const platformIC = updatedPlatformEntries.map(([platformName, zipPath]) => {
+  const platformIC = updatedPlatformEntries.map(({platform: platformName, path: zipPath}) => {
     const content = fs.createReadStream(zipPath);
     return {
       path: `${platformName}/${path.basename(zipPath)}`,
@@ -49,7 +55,7 @@ export async function uploadRelease(valist: Client, config: ReleaseConfig, yamlC
   );
   CliUx.ux.action.stop();
 
-  for (const [platformName, zipPath] of updatedPlatformEntries) {
+  for (const {platform: platformName, path: zipPath, installScript, executable} of updatedPlatformEntries) {
     const stats = await fs.promises.stat(zipPath);
     const fileSize = stats.size;
 
@@ -58,6 +64,8 @@ export async function uploadRelease(valist: Client, config: ReleaseConfig, yamlC
       external_url: `${meta.external_url}/${platformName}/${path.basename(zipPath)}`,
       downloadSize: fileSize.toString(),
       installSize: fileSize.toString(), // Adjust this if necessary
+      installScript,
+      executable,
     };
   }
   return meta;

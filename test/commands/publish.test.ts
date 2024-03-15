@@ -138,5 +138,12 @@ describe('publish CLI command', () => {
         ]
         const releaseMeta = await runPublishCommandWithMockData('v0.0.3', publishArgs)
         console.log('release meta ', releaseMeta)
+        const platformKeys = Object.keys(releaseMeta.platforms)
+        expect(platformKeys.includes('HyperPlay-0.12.0-macOS-arm64.dmg')).true
+        expect(platformKeys.includes('darwin_arm64_dmg_zip_blockmap')).true
+        expect(platformKeys.includes('windows_amd64')).true
+        expect(platformKeys.includes('latest_mac_yml')).true
+        expect(releaseMeta.platforms.windows_amd64?.installScript).eq('install_deps.exe')
+        expect(releaseMeta.platforms.windows_amd64?.executable).eq('test_win_x64.txt')
     })
 })

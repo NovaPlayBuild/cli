@@ -68,7 +68,7 @@ export default class Publish extends Command {
       this.error('Account, project, and release were not supplied and hyperplay.yml does not exist')
     }
 
-    const {config, yamlConfig} = parsed;
+    const config = parsed;
     if (!config.account) this.error('invalid account name');
     if (!config.project) this.error('invalid project name');
     if (!config.release) this.error('invalid release name');
@@ -77,13 +77,13 @@ export default class Publish extends Command {
     config.account = config.account.toLowerCase();
     config.project = config.project.toLowerCase();
 
-    return {config, yamlConfig}
+    return config;
   }
 
   // if no args are passed, use the yml
   public async run(): Promise<void> {
     const { args, flags } = await this.parse(Publish);
-    const {config, yamlConfig} = await this.parseConfig(args, flags)
+    const config = await this.parseConfig(args, flags)
 
     const fullReleaseName = `${config.account}/${config.project}/${config.release}`;
     console.log('Publishing', { platforms: config.platforms }, `as ${fullReleaseName}`);
@@ -116,7 +116,7 @@ export default class Publish extends Command {
       this.error(`release ${config.release} exists`);
     }
 
-    const release = await uploadRelease(valist, config, yamlConfig);
+    const release = await uploadRelease(valist, config);
     CliUx.ux.log(`successfully uploaded files to IPFS: ${release.external_url}`);
 
     CliUx.ux.action.start('publishing release');
