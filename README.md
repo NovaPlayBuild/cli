@@ -42,6 +42,8 @@ USAGE
 
 The `publish` command args and flags can be passed as CLI args or with a YML file.
 
+Note that in either case, you must pass a private key for an address added to your project or account with the cli flag `--private-key <value>`.
+
 ### Flags and Environment Variables
 ```bash
 $ hyperplay publish [ACCOUNT] [PROJECT] [RELEASE] [--meta-tx] [--network <value>] [--private-key <value>] [--web <value>]
