@@ -9,6 +9,7 @@ HyperPlay command line interface.
   * [Flags & Environment Variables](#flags_and_env)
   * [YML](#yml)
 * [Commands](#commands)
+* [FAQ](#faq)
 <!-- tocstop -->
 
 # Install 
@@ -61,16 +62,28 @@ HYPERPLAY_TARGET_CHANNEL=beta
 ## YML
 Create a `hyperplay.yml` in your project folder.
 
+`zip` is true if you want to zip the folder or file prior to upload.
+- Note that for HyperPlay submissions, you will need `zip: true` unless you are uploading a zip file.
+
 ```yml
 account: test-ground
 project: test44
 release: 0.0.7
 
 platforms:
-  darwin_amd64: dist/darwin/amd64/hello-go
-  darwin_arm64: dist/darwin/arm64/hello-go
-  linux_amd64: dist/linux/amd64/hello-go
-  windows_amd64: dist/windows/amd64/hello-go
+  darwin_amd64: 
+    path: dist/darwin/amd64/hello-go
+    zip: true
+  darwin_arm64: 
+    path: dist/darwin/arm64/hello-go
+    zip: true
+  linux_amd64: 
+    path: dist/linux/amd64/hello-go
+    zip: true
+# dist/windows/amd64/hello-go.zip zipped in a separate step so we don't need to zip with the cli
+  windows_amd64: 
+    path: dist/windows/amd64/hello-go.zip
+    zip: false
 
 ```
 
@@ -169,3 +182,13 @@ EXAMPLES
   $ hyperplay publish ipfs/go-ipfs/v0.12.3 dist/
 ```
 <!-- commandsstop -->
+
+# FAQ
+
+### How do I fix this error? "user is not an account or project member"
+
+Make sure you pass the private key of your Release Manager with the flag `--private-key=<private_key>` 
+
+For HyperPlay Projects, make sure the public key is added as a Release Manager on your HyperPlay project. You can modify the project members at https://developers.hyperplay.xyz/<account_name>/<project_name>/settings.
+
+It is also possible to add the public key directly to your project through the [Valist registry](https://polygonscan.com/address/0xd504d012d78b81fa27288628f3fc89b0e2f56e24) by calling `addProjectMember`.
