@@ -65,6 +65,7 @@ export default class Publish extends Command {
     }
 
     const config = parsed;
+    // TODO: add zod validation
     if (!config.account) this.error('invalid account name');
     if (!config.project) this.error('invalid project name');
     if (!config.release) this.error('invalid release name');
