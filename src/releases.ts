@@ -16,7 +16,7 @@ export async function uploadRelease(valist: Client, config: ReleaseConfig, yamlC
       return [platform, filePath]
     }
     const zipPath = getZipName(filePath);
-    CliUx.ux.action.start(`zipping ${filePath}`);
+    CliUx.ux.action.start(`zipping ${zipPath}`);
     await zipDirectory(filePath, zipPath);
     CliUx.ux.action.stop();
     return [platform, zipPath] as [string, string];
