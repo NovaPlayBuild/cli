@@ -113,9 +113,7 @@ export default class Publish extends Command {
       this.error(`release ${config.release} exists`);
     }
 
-    CliUx.ux.action.start('uploading files');
     const release = await uploadRelease(valist, config, yamlConfig);
-    CliUx.ux.action.stop();
     CliUx.ux.log(`successfully uploaded files to IPFS: ${release.external_url}`);
 
     CliUx.ux.action.start('publishing release');
