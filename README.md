@@ -40,31 +40,9 @@ USAGE
 
 ## Publish
 
-The `publish` command args and flags can be passed as CLI args or with a YML file.
+The `publish` command requires a local YML file. The default YML path used is `./hyperplay.yml`, but you can also specify the path to this file with the `--yml-path` flag or the `HYPERPLAY_YML_PATH` environment variable.
 
 Note that in either case, you must pass a private key for an address added to your project or account with the cli flag `--private-key <value>`.
-
-### Flags and Environment Variables
-```bash
-$ hyperplay publish [ACCOUNT] [PROJECT] [RELEASE] [--meta-tx] [--network <value>] [--private-key <value>] [--web <value>]
-    [--darwin_amd64 <value>] [--darwin_arm64 <value>] [--windows_amd64 <value>] [--skip_hyperplay_publish] [--channel <value>]
-```
-
-Flags can also be specified with environment variables:
-```bash
-HYPERPLAY_PRIVATE_KEY=0x123
-HYPERPLAY_NETWORK=polygon
-HYPERPLAY_WEB_BUILD=./web
-HYPERPLAY_DARWIN_AMD64_BUILD=./darwin/amd64
-HYPERPLAY_DARWIN_ARM64_BUILD=./darwin/arm64
-HYPERPLAY_WINDOWS_ARM64_BUILD=./windows/arm64
-HYPERPLAY_WINDOWS_AMD64_BUILD=./windows/amd64
-HYPERPLAY_LINUX_AMD64_BUILD=./linux/amd64
-HYPERPLAY_LINUX_ARM64_BUILD=./linux/arm64
-HYPERPLAY_ANDROID_AMD64_BUILD=./android/amd64
-HYPERPLAY_SKIP_HYPERPLAY_PUBLISH=false
-HYPERPLAY_TARGET_CHANNEL=beta
-```
 
 ### YML
 Create a `hyperplay.yml` in your project folder.
@@ -81,16 +59,21 @@ platforms:
   darwin_amd64: 
     path: dist/darwin/amd64/hello-go
     zip: true
+    executable: go_app
   darwin_arm64: 
     path: dist/darwin/arm64/hello-go
     zip: true
+    executable: go_app
   linux_amd64: 
     path: dist/linux/amd64/hello-go
     zip: true
+    executable: go_app
 # dist/windows/amd64/hello-go.zip zipped in a separate step so we don't need to zip with the cli
   windows_amd64: 
     path: dist/windows/amd64/hello-go.zip
     zip: false
+    executable: go_app.exe
+    installScript: install_deps.exe
 
 ```
 
@@ -189,6 +172,15 @@ EXAMPLES
   $ hyperplay publish ipfs/go-ipfs/v0.12.3 dist/
 ```
 <!-- commandsstop -->
+
+Flags can also be specified with environment variables:
+```bash
+HYPERPLAY_PRIVATE_KEY=0x123
+HYPERPLAY_NETWORK=polygon
+HYPERPLAY_ANDROID_AMD64_BUILD=./android/amd64
+HYPERPLAY_SKIP_HYPERPLAY_PUBLISH=false
+HYPERPLAY_TARGET_CHANNEL=beta
+```
 
 # FAQ
 
