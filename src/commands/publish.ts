@@ -74,6 +74,9 @@ export default class Publish extends Command {
     if (!config.release) this.error('invalid release name');
     if (!config.platforms) this.error('no platforms configured');
 
+    config.account = config.account.toLowerCase();
+    config.project = config.project.toLowerCase();
+
     return {config, yamlConfig}
   }
 

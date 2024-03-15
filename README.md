@@ -6,9 +6,11 @@ HyperPlay command line interface.
 * [HyperPlay CLI](#hyperplay-cli)
 * [Install](#install)
 * [Usage](#usage)
-  * [Flags & Environment Variables](#flags_and_env)
-  * [YML](#yml)
+  * [Publish](#publish)
+    * [Flags and Environment Variables](#flags-and-environment-variables)
+    * [YML](#yml)
 * [Commands](#commands)
+* [FAQ](#faq)
 <!-- tocstop -->
 
 # Install 
@@ -36,7 +38,13 @@ USAGE
 ...
 ```
 
-## Flags & Environment Variables
+## Publish
+
+The `publish` command args and flags can be passed as CLI args or with a YML file.
+
+Note that in either case, you must pass a private key for an address added to your project or account with the cli flag `--private-key <value>`.
+
+### Flags and Environment Variables
 ```bash
 $ hyperplay publish [ACCOUNT] [PROJECT] [RELEASE] [--meta-tx] [--network <value>] [--private-key <value>] [--web <value>]
     [--darwin_amd64 <value>] [--darwin_arm64 <value>] [--windows_amd64 <value>] [--skip_hyperplay_publish] [--channel <value>]
@@ -58,8 +66,11 @@ HYPERPLAY_SKIP_HYPERPLAY_PUBLISH=false
 HYPERPLAY_TARGET_CHANNEL=beta
 ```
 
-## YML
+### YML
 Create a `hyperplay.yml` in your project folder.
+
+`zip` is true if you want to zip the folder or file prior to upload.
+- Note that for HyperPlay submissions, you will need `zip: true` unless you are uploading a zip file.
 
 ```yml
 account: test-ground
@@ -67,10 +78,19 @@ project: test44
 release: 0.0.7
 
 platforms:
-  darwin_amd64: dist/darwin/amd64/hello-go
-  darwin_arm64: dist/darwin/arm64/hello-go
-  linux_amd64: dist/linux/amd64/hello-go
-  windows_amd64: dist/windows/amd64/hello-go
+  darwin_amd64: 
+    path: dist/darwin/amd64/hello-go
+    zip: true
+  darwin_arm64: 
+    path: dist/darwin/arm64/hello-go
+    zip: true
+  linux_amd64: 
+    path: dist/linux/amd64/hello-go
+    zip: true
+# dist/windows/amd64/hello-go.zip zipped in a separate step so we don't need to zip with the cli
+  windows_amd64: 
+    path: dist/windows/amd64/hello-go.zip
+    zip: false
 
 ```
 
@@ -169,3 +189,23 @@ EXAMPLES
   $ hyperplay publish ipfs/go-ipfs/v0.12.3 dist/
 ```
 <!-- commandsstop -->
+
+# FAQ
+
+## How do I fix "user is not an account or project member"?
+
+Make sure you pass the private key of your Release Manager with the flag `--private-key=<private_key>` 
+
+For HyperPlay Projects, make sure the public key is added as a Release Manager on your HyperPlay project. You can modify the project members at https://developers.hyperplay.xyz/<account_name>/<project_name>/settings.
+
+It is also possible to add the public key directly to your project through the [Valist registry](https://polygonscan.com/address/0xd504d012d78b81fa27288628f3fc89b0e2f56e24) by calling `addProjectMember`.
+
+## How do I find my account or project name?
+
+To get the account name, navigate to the [HyperPlay Dev Portal](https://developers.hyperplay.xyz) and on the project card, you can find your account name in the "Published by: <account_name" text.
+
+![image](https://github.com/HyperPlay-Gaming/cli/assets/27568879/d1f89e34-c6e0-494b-bba8-eb29a8c161fe)
+
+To get the project name, click the project card. The project name is in the text input field with the "Game Name" label, shown below.
+
+![image](https://github.com/HyperPlay-Gaming/cli/assets/27568879/f85b4e4b-0a1c-44df-a277-954fe48766ea)
