@@ -27,11 +27,12 @@ $ npx @hyperplay/cli help
 
 <!-- usage -->
 ```sh-session
+$ npm install -g @hyperplay/cli
 $ hyperplay COMMAND
 running command...
-$ hyperplay --version
+$ hyperplay (--version)
 @hyperplay/cli/2.10.2 win32-x64 node-v20.8.0
-$ hyperplay help [COMMAND]
+$ hyperplay --help [COMMAND]
 USAGE
   $ hyperplay COMMAND
 ...
@@ -100,7 +101,7 @@ Publish a release
 ```
 USAGE
   $ hyperplay publish [ACCOUNT] [PROJECT] [RELEASE] [--meta-tx] [--network <value>] [--private-key <value>]
-    [--skip_hyperplay_publish] [--channel <value>] [--use-yml] [--yml-path <value>]
+    [--skip_hyperplay_publish] [--channel <value>] [--yml-path <value>]
 
 ARGUMENTS
   ACCOUNT  account name
@@ -113,7 +114,6 @@ FLAGS
   --network=<value>              [default: https://rpc.valist.io] Blockchain network
   --private-key=<value>          Account private key
   --[no-]skip_hyperplay_publish  Do not publish to HyperPlay. Only Valist.
-  --use-yml                      Use hyperplay.yml to get platform config
   --yml-path=<value>             Path to yml file containing publish args
 
 DESCRIPTION

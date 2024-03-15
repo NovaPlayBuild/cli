@@ -43,12 +43,6 @@ export const channel = Flags.string({
   env: 'HYPERPLAY_TARGET_CHANNEL'
 });
 
-export const useYml = Flags.boolean({
-  description: 'Use hyperplay.yml to get platform config',
-  default: false,
-  env: 'HYPERPLAY_USE_YML'
-})
-
 export const ymlPath = Flags.string({
   description: 'Path to yml file containing publish args',
   default: '',

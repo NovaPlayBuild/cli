@@ -28,7 +28,6 @@ export default class Publish extends Command {
     'private-key': flags.privateKey,
     'skip_hyperplay_publish': flags.skip_hyperplay_publish,
     'channel': flags.channel,
-    'use-yml': flags.useYml,
     'yml-path': flags.ymlPath
   }
 
