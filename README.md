@@ -6,6 +6,7 @@ HyperPlay command line interface.
 * [HyperPlay CLI](#hyperplay-cli)
 * [Install](#install)
 * [Usage](#usage)
+* [dist/windows/amd64/hello-go.zip zipped in a separate step so we don't need to zip with the cli](#distwindowsamd64hello-gozip-zipped-in-a-separate-step-so-we-dont-need-to-zip-with-the-cli)
 * [Commands](#commands)
 * [FAQ](#faq)
 <!-- tocstop -->
@@ -31,13 +32,58 @@ $ npm install -g @hyperplay/cli
 $ hyperplay COMMAND
 running command...
 $ hyperplay (--version)
-@hyperplay/cli/2.10.2 win32-x64 node-v20.8.0
+@hyperplay/cli/2.11.0 win32-x64 node-v20.8.0
 $ hyperplay --help [COMMAND]
 USAGE
   $ hyperplay COMMAND
 ...
 ```
 <!-- usagestop -->
+
+## Publish
+
+The `publish` command requires a local YML file. The default YML path used is `./hyperplay.yml`, but you can also specify the path to this file with the `--yml-path` flag or the `HYPERPLAY_YML_PATH` environment variable.
+
+Note that in either case, you must pass a private key for an address added to your project or account with the cli flag `--private-key <value>`.
+
+### YML
+Create a `hyperplay.yml` in your project folder.
+
+`zip` is true if you want to zip the folder or file prior to upload.
+- Note that for HyperPlay submissions, you will need `zip: true` unless you are uploading a zip file.
+
+Example YML config file:
+```yml
+account: test-ground
+project: test44
+release: 0.0.7
+
+platforms:
+  darwin_amd64: 
+    path: dist/darwin/amd64/hello-go
+    zip: true
+    executable: go_app
+  darwin_arm64: 
+    path: dist/darwin/arm64/hello-go
+    zip: true
+    executable: go_app
+  linux_amd64: 
+    path: dist/linux/amd64/hello-go
+    zip: true
+    executable: go_app
+# dist/windows/amd64/hello-go.zip zipped in a separate step so we don't need to zip with the cli
+  windows_amd64: 
+    path: dist/windows/amd64/hello-go.zip
+    zip: false
+    executable: go_app.exe
+    installScript: install_deps.exe
+
+```
+
+Run the publish command from the hyperplay cli. Set the publisher private key via an envrionment variable if CI/CD.
+```bash
+HYPERPLAY_PRIVATE_KEY=0x1234 hyperplay publish
+```
 
 # Commands
 <!-- commands -->
