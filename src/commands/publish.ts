@@ -69,6 +69,10 @@ export default class Publish extends Command {
     if (!config.project) this.error('invalid project name');
     if (!config.release) this.error('invalid release name');
     if (!config.platforms) this.error('no platforms configured');
+    
+    for (const [key, value] of Object.entries(config.platforms)){
+      if (!value.executable) this.error(`No executable path found for platform ${key}`)
+    }
 
     config.account = config.account.toLowerCase();
     config.project = config.project.toLowerCase();

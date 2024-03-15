@@ -7,13 +7,17 @@ platforms:
   darwin_amd64: 
     path: ./mock_data/mac_x64
     zip: true
+    executable: test_win_x64.txt
   darwin_arm64: 
     path: ./mock_data/mac_arm64
     zip: true
+    executable: test_win_x64.txt
   windows_amd64: 
     path: ./mock_data/windows_amd64
     zip: true
+    executable: test_win_x64.txt
   web: 
     path: ./mock_data/web
     zip: true
+    executable: test_win_x64.txt
     
