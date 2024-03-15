@@ -6,9 +6,6 @@ HyperPlay command line interface.
 * [HyperPlay CLI](#hyperplay-cli)
 * [Install](#install)
 * [Usage](#usage)
-  * [Publish](#publish)
-    * [Flags and Environment Variables](#flags-and-environment-variables)
-    * [YML](#yml)
 * [Commands](#commands)
 * [FAQ](#faq)
 <!-- tocstop -->
@@ -18,9 +15,11 @@ HyperPlay command line interface.
 <!-- install -->
 ```sh-session
 $ npm install -g @hyperplay/cli
-$ @hyperplay/cli
-# OR
-$ npx @hyperplay/cli
+$ hyperplay help
+```
+OR
+```sh-session
+$ npx @hyperplay/cli help
 ```
 <!-- installstop -->
 
@@ -31,75 +30,31 @@ $ npx @hyperplay/cli
 $ hyperplay COMMAND
 running command...
 $ hyperplay --version
-@hyperplay/cli/2.9.1 darwin-arm64 node-v16.13.0
-$ hyperplay --help [COMMAND]
+@hyperplay/cli/2.10.2 win32-x64 node-v20.8.0
+$ hyperplay help [COMMAND]
 USAGE
   $ hyperplay COMMAND
 ...
-```
-
-## Publish
-
-The `publish` command requires a local YML file. The default YML path used is `./hyperplay.yml`, but you can also specify the path to this file with the `--yml-path` flag or the `HYPERPLAY_YML_PATH` environment variable.
-
-Note that in either case, you must pass a private key for an address added to your project or account with the cli flag `--private-key <value>`.
-
-### YML
-Create a `hyperplay.yml` in your project folder.
-
-`zip` is true if you want to zip the folder or file prior to upload.
-- Note that for HyperPlay submissions, you will need `zip: true` unless you are uploading a zip file.
-
-```yml
-account: test-ground
-project: test44
-release: 0.0.7
-
-platforms:
-  darwin_amd64: 
-    path: dist/darwin/amd64/hello-go
-    zip: true
-    executable: go_app
-  darwin_arm64: 
-    path: dist/darwin/arm64/hello-go
-    zip: true
-    executable: go_app
-  linux_amd64: 
-    path: dist/linux/amd64/hello-go
-    zip: true
-    executable: go_app
-# dist/windows/amd64/hello-go.zip zipped in a separate step so we don't need to zip with the cli
-  windows_amd64: 
-    path: dist/windows/amd64/hello-go.zip
-    zip: false
-    executable: go_app.exe
-    installScript: install_deps.exe
-
-```
-
-Run the publish command from the hyperplay cli. Set the publisher private key via an envrionment variable if CI/CD.
-```bash
-HYPERPLAY_PRIVATE_KEY=0x1234 hyperplay publish
 ```
 <!-- usagestop -->
 
 # Commands
 <!-- commands -->
-* [`hyperplay help [COMMAND]`](#hyperplay-help-command)
+* [`hyperplay help [COMMANDS]`](#hyperplay-help-commands)
 * [`hyperplay import`](#hyperplay-import)
 * [`hyperplay keygen`](#hyperplay-keygen)
-* [`hyperplay publish [PACKAGE] [PATH]`](#hyperplay-publish-package-path)
+* [`hyperplay publish [ACCOUNT] [PROJECT] [RELEASE]`](#hyperplay-publish-account-project-release)
 
-## `hyperplay help [COMMAND]`
+## `hyperplay help [COMMANDS]`
 
 Display help for hyperplay.
 
 ```
 USAGE
-  $ hyperplay help [COMMAND] [-n]
+  $ hyperplay help [COMMANDS] [-n]
 
 ARGUMENTS
-  COMMAND  Command to show help for.
+  COMMANDS  Command to show help for.
 
 FLAGS
   -n, --nested-commands  Include all nested commands in the output.
@@ -138,14 +93,14 @@ EXAMPLES
   $ hyperplay keygen
 ```
 
-## `hyperplay publish [PACKAGE] [PATH]`
+## `hyperplay publish [ACCOUNT] [PROJECT] [RELEASE]`
 
 Publish a release
 
 ```
 USAGE
-  $ hyperplay publish [ACCOUNT] [PROJECT] [RELEASE] [--meta-tx] [--network <value>] [--private-key <value>] [--web <value>]
-    [--darwin_amd64 <value>] [--darwin_arm64 <value>] [--windows_amd64 <value>] [--skip_hyperplay_publish] [--channel <value>]
+  $ hyperplay publish [ACCOUNT] [PROJECT] [RELEASE] [--meta-tx] [--network <value>] [--private-key <value>]
+    [--skip_hyperplay_publish] [--channel <value>] [--use-yml] [--yml-path <value>]
 
 ARGUMENTS
   ACCOUNT  account name
@@ -154,14 +109,12 @@ ARGUMENTS
 
 FLAGS
   --channel=<value>              [default: main] Publish build to this release channel on HyperPlay.
-  --darwin_amd64=<value>         Path to darwin amd64 build
-  --darwin_arm64=<value>         Path to darwin arm64 build
   --[no-]meta-tx                 Enable meta transactions
   --network=<value>              [default: https://rpc.valist.io] Blockchain network
   --private-key=<value>          Account private key
   --[no-]skip_hyperplay_publish  Do not publish to HyperPlay. Only Valist.
-  --web=<value>                  Path to web build
-  --windows_amd64=<value>        Path to windows amd64 build
+  --use-yml                      Use hyperplay.yml to get platform config
+  --yml-path=<value>             Path to yml file containing publish args
 
 DESCRIPTION
   Publish a release
@@ -171,6 +124,7 @@ EXAMPLES
 
   $ hyperplay publish ipfs/go-ipfs/v0.12.3 dist/
 ```
+
 <!-- commandsstop -->
 
 Flags can also be specified with environment variables:
