@@ -123,5 +123,6 @@ describe('publish CLI command', () => {
         expect(platformKeys.includes('latest_mac_yml')).true
         expect(releaseMeta.platforms.windows_amd64?.installScript).eq('install_deps.exe')
         expect(releaseMeta.platforms.windows_amd64?.executable).eq('test_win_x64.txt')
+        expect(releaseMeta.description).to.eq('This release starts Kosium Season 1000. Can you conquer the oppressor forces stronghold on Mars?')
     })
 })
