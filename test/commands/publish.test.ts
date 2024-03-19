@@ -94,28 +94,6 @@ describe('publish CLI command', () => {
         return releaseMeta
     }
 
-    it('should create a release with the publish command cli args', async function () {
-        const mockDataFolder = './test/mock_data'
-        const releaseVersion = 'v0.0.1'
-        const publishArgs = [
-            'valist',
-            'cli',
-            releaseVersion,
-            `--web=${mockDataFolder}/web`,
-            `--darwin_amd64=${mockDataFolder}/mac_amd64`,
-            `--darwin_arm64=${mockDataFolder}/mac_arm64`,
-            `--windows_amd64=${mockDataFolder}/windows_amd64`,
-            '--private-key=4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d',
-            '--no-meta-tx'
-        ]
-        const releaseMeta = await runPublishCommandWithMockData(releaseVersion, publishArgs)
-        const platformKeys = Object.keys(releaseMeta.platforms)
-        expect(platformKeys.includes('web')).true
-        expect(platformKeys.includes('darwin_amd64')).true
-        expect(platformKeys.includes('darwin_arm64')).true
-        expect(platformKeys.includes('windows_amd64')).true
-    });
-
     it('should create a release with the publish command and the hyperplay.yml file', async function () {
         const publishArgs = [
             '--private-key=4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d',
@@ -138,5 +116,12 @@ describe('publish CLI command', () => {
         ]
         const releaseMeta = await runPublishCommandWithMockData('v0.0.3', publishArgs)
         console.log('release meta ', releaseMeta)
+        const platformKeys = Object.keys(releaseMeta.platforms)
+        expect(platformKeys.includes('HyperPlay-0.12.0-macOS-arm64.dmg')).true
+        expect(platformKeys.includes('darwin_arm64_dmg_zip_blockmap')).true
+        expect(platformKeys.includes('windows_amd64')).true
+        expect(platformKeys.includes('latest_mac_yml')).true
+        expect(releaseMeta.platforms.windows_amd64?.installScript).eq('install_deps.exe')
+        expect(releaseMeta.platforms.windows_amd64?.executable).eq('test_win_x64.txt')
     })
 })

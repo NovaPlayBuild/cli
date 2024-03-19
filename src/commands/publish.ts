@@ -26,13 +26,8 @@ export default class Publish extends Command {
     'meta-tx': flags.metaTx,
     'network': flags.network,
     'private-key': flags.privateKey,
-    'web': flags.web,
-    'darwin_amd64': flags.darwin_amd64,
-    'darwin_arm64': flags.darwin_arm64,
-    'windows_amd64': flags.windows_amd64,
     'skip_hyperplay_publish': flags.skip_hyperplay_publish,
     'channel': flags.channel,
-    'use-yml': flags.useYml,
     'yml-path': flags.ymlPath
   }
 
@@ -68,22 +63,27 @@ export default class Publish extends Command {
       this.error('Account, project, and release were not supplied and hyperplay.yml does not exist')
     }
 
-    const {config, yamlConfig} = parsed;
+    const config = parsed;
+    // TODO: add zod validation
     if (!config.account) this.error('invalid account name');
     if (!config.project) this.error('invalid project name');
     if (!config.release) this.error('invalid release name');
     if (!config.platforms) this.error('no platforms configured');
+    
+    for (const [key, value] of Object.entries(config.platforms)){
+      if (!value.executable) this.error(`No executable path found for platform ${key}`)
+    }
 
     config.account = config.account.toLowerCase();
     config.project = config.project.toLowerCase();
 
-    return {config, yamlConfig}
+    return config;
   }
 
   // if no args are passed, use the yml
   public async run(): Promise<void> {
     const { args, flags } = await this.parse(Publish);
-    const {config, yamlConfig} = await this.parseConfig(args, flags)
+    const config = await this.parseConfig(args, flags)
 
     const fullReleaseName = `${config.account}/${config.project}/${config.release}`;
     console.log('Publishing', { platforms: config.platforms }, `as ${fullReleaseName}`);
@@ -116,7 +116,7 @@ export default class Publish extends Command {
       this.error(`release ${config.release} exists`);
     }
 
-    const release = await uploadRelease(valist, config, yamlConfig);
+    const release = await uploadRelease(valist, config);
     CliUx.ux.log(`successfully uploaded files to IPFS: ${release.external_url}`);
 
     CliUx.ux.action.start('publishing release');
