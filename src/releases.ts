@@ -46,7 +46,7 @@ export async function uploadRelease(valist: Client, config: ReleaseConfig) {
   });
 
   CliUx.ux.action.start('uploading files');
-  meta.external_url = await valist.writeFolder(
+  meta.external_url = await valist.writeFolderNode(
     platformIC,
     true,
     (bytes: string | number) => {
