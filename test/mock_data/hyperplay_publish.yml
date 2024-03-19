@@ -3,6 +3,8 @@ account: valist
 project: cli
 release: v0.0.3
 
+description: This release starts Kosium Season 1000. Can you conquer the oppressor forces stronghold on Mars?
+
 platforms:
 # unzipped file
   HyperPlay-0.12.0-macOS-arm64.dmg: 
