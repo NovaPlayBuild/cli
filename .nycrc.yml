@@ -1,0 +1,8 @@
+exclude: ["dist"]
+include: ["src/**/*.ts"]
+
+check-coverage: true
+functions: 73
+lines: 89
+statements: 85
+branches: 59
