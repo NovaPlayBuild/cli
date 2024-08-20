@@ -6,7 +6,7 @@ import { select } from '../keys';
 import { CookieJar } from 'tough-cookie';
 import axios from 'axios';
 import { wrapper } from 'axios-cookiejar-support';
-import { loginAndPublish } from '../api';
+import { login, publish } from '../api';
 import { uploadRelease } from '../releases';
 import { parseYml } from '../yml';
 import { FlagOutput } from '@oclif/core/lib/interfaces';
@@ -120,26 +120,29 @@ export default class Publish extends Command {
       this.error(`release ${config.release} exists`);
     }
 
-    const release = await uploadRelease(valist, config);
-    CliUx.ux.log(`successfully uploaded files to IPFS: ${release.external_url}`);
+    const apiURL = 'https://developers.hyperplay.xyz'
+    const apiClient = wrapper(axios.create({ jar: cookieJar, withCredentials: true, baseURL: apiURL }));
+    await login(
+      apiClient,
+      cookieJar,
+      wallet
+    );
 
-    CliUx.ux.action.start('publishing release');
+    const release = await uploadRelease(apiClient, config);
+    CliUx.ux.log(`Successfully uploaded files to HyperPlay: ${release.external_url}`);
+
+    CliUx.ux.action.start('Publishing release');
     const tx = await valist.createRelease(projectID, config.release, release);
     CliUx.ux.action.stop();
 
-    CliUx.ux.action.start(`confirming transaction ${tx.hash}`);
+    CliUx.ux.action.start(`Confirming transaction ${tx.hash}`);
     await tx.wait();
     CliUx.ux.action.stop();
 
     // Publish to HyperPlay
     if (!flags['skip_hyperplay_publish']) {
-      const apiURL = 'https://developers.hyperplay.xyz'
-      const apiClient = wrapper(axios.create({ jar: cookieJar, withCredentials: true, baseURL: apiURL }));
-      await loginAndPublish(
+      await publish(
         apiClient,
-        cookieJar,
-        wallet,
-        apiURL,
         projectID,
         fullReleaseName,
         flags['channel']
@@ -150,8 +153,6 @@ export default class Publish extends Command {
     let releaseText = 'view the release at:\n'
     if (!flags['skip_hyperplay_publish'])
       releaseText += `https://developers.hyperplay.xyz/${config.account}/${config.project}/settings\n`
-    releaseText += release.external_url + '\n'
-    releaseText += `ipfs://${release.external_url.replace('https://gateway.valist.io/ipfs/', '')}\n`
     CliUx.ux.log(releaseText);
 
     this.exit(0);
