@@ -120,7 +120,7 @@ export default class Publish extends Command {
       this.error(`release ${config.release} exists`);
     }
 
-    const apiURL = 'https://developers.hyperplay.xyz'
+    const apiURL = 'https://developers.novaplay.io'
     const apiClient = wrapper(axios.create({ jar: cookieJar, withCredentials: true, baseURL: apiURL }));
     await login(
       apiClient,
@@ -129,7 +129,7 @@ export default class Publish extends Command {
     );
 
     const release = await uploadRelease(apiClient, config);
-    CliUx.ux.log(`Successfully uploaded files to HyperPlay: ${release.external_url}`);
+    CliUx.ux.log(`Successfully uploaded files to NovaPlay: ${release.external_url}`);
 
     CliUx.ux.action.start('Publishing release');
     const tx = await valist.createRelease(projectID, config.release, release);
@@ -139,7 +139,7 @@ export default class Publish extends Command {
     await tx.wait();
     CliUx.ux.action.stop();
 
-    // Publish to HyperPlay
+    // Publish to NovaPlay
     if (!flags['skip_hyperplay_publish']) {
       await publish(
         apiClient,
@@ -152,7 +152,7 @@ export default class Publish extends Command {
     CliUx.ux.log(`Successfully published ${config.account}/${config.project}/${config.release}!`);
     let releaseText = 'view the release at:\n'
     if (!flags['skip_hyperplay_publish'])
-      releaseText += `https://developers.hyperplay.xyz/${config.account}/${config.project}/settings\n`
+      releaseText += `https://developers.novaplay.io/${config.account}/${config.project}/settings\n`
     CliUx.ux.log(releaseText);
 
     this.exit(0);

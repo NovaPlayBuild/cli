@@ -40,7 +40,7 @@ describe('YML Tests', ()=>{
         expect(config.account).to.eq('hyperplaycd')
         expect(config.project).to.eq('desktop')
         expect(config.release).to.eq('v0.12.0')
-        expect(config.platforms['darwin_amd64_dmg_zip_blockmap'].path).to.eq('./test/mock_data/HyperPlay-0.12.0-macOS-x64.zip.blockmap')
+        expect(config.platforms['darwin_amd64_dmg_zip_blockmap'].path).to.eq('./test/mock_data/NovaPlay-0.12.0-macOS-x64.zip.blockmap')
         expect(config.platforms['darwin_amd64_dmg_zip_blockmap'].zip).to.eq(false)
     })
 })

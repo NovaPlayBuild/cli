@@ -2,7 +2,7 @@
   "name": "@hyperplay/cli",
   "version": "2.13.0",
   "description": "Hyperplay CLI",
-  "author": "HyperPlay Labs, Inc.",
+  "author": "NovaPlay Labs, Inc.",
   "bin": {
     "hyperplay": "./bin/run"
   },

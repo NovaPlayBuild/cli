@@ -7,7 +7,7 @@ description: This release starts Kosium Season 1000. Can you conquer the oppress
 
 platforms:
 # unzipped file
-  HyperPlay-0.12.0-macOS-arm64.dmg: 
+  NovaPlay-0.12.0-macOS-arm64.dmg: 
     path: ./test/mock_data/dmg.txt
     zip: false
     executable: dmg.txt

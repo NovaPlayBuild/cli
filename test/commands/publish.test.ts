@@ -6,7 +6,7 @@ import nock from 'nock'
 import { CookieJar } from 'tough-cookie';
 import { BrowserProvider } from 'ethers';
 
-const url = 'https://developers.hyperplay.xyz'
+const url = 'https://developers.novaplay.io'
 const publisherPrivateKey = '4f3edf983ac636a65a842ce7c78d9aa706d3b113bce9c46f30d7d21715b23b1d';
 let provider: ethers.JsonRpcProvider;
 let signer: ethers.JsonRpcSigner;
@@ -170,14 +170,14 @@ describe('publish CLI command', () => {
             '--skip_hyperplay_publish'
         ]
         const mockPlatforms = [
-            { platformKey: 'HyperPlay-0.12.0-macOS-arm64.dmg', fileName: 'dmg.txt', partCount: 1 },
+            { platformKey: 'NovaPlay-0.12.0-macOS-arm64.dmg', fileName: 'dmg.txt', partCount: 1 },
             { platformKey: 'darwin_arm64_dmg_zip_blockmap', fileName: 'mac_arm64.zip', partCount: 1 },
             { platformKey: 'windows_amd64', fileName: 'windows_amd64.zip', partCount: 1 },
             { platformKey: 'latest_mac_yml', fileName: 'web.zip', partCount: 1 }
         ]
         const releaseMeta = await runPublishCommandWithMockData('v0.0.3', publishArgs, mockPlatforms)
         const platformKeys = Object.keys(releaseMeta.platforms)
-        expect(platformKeys.includes('HyperPlay-0.12.0-macOS-arm64.dmg')).true
+        expect(platformKeys.includes('NovaPlay-0.12.0-macOS-arm64.dmg')).true
         expect(platformKeys.includes('darwin_arm64_dmg_zip_blockmap')).true
         expect(platformKeys.includes('windows_amd64')).true
         expect(platformKeys.includes('latest_mac_yml')).true

@@ -31,11 +31,11 @@ export async function login(client: AxiosInstance, cookieJar: CookieJar, signer:
   const csrfResponse = await client.get("/api/auth/csrf");
   const csrfToken = csrfResponse.data.csrfToken;
 
-  CliUx.ux.action.start(`Signing into HyperPlay API with ${signer.address}:`);
+  CliUx.ux.action.start(`Signing into NovaPlay API with ${signer.address}:`);
   const siweMessage = new SiweMessage({
     domain: new URL(client.defaults.baseURL as string).host,
     address: signer.address,
-    statement: "Sign in with Ethereum to HyperPlay",
+    statement: "Sign in with Ethereum to NovaPlay",
     uri: client.defaults.baseURL as string,
     version: "1",
     chainId: 137,

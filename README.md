@@ -1,9 +1,9 @@
-# HyperPlay CLI
+# NovaPlay CLI
 
-HyperPlay command line interface.
+NovaPlay command line interface.
 
 <!-- toc -->
-* [HyperPlay CLI](#hyperplay-cli)
+* [NovaPlay CLI](#hyperplay-cli)
 * [Install](#install)
 * [Usage](#usage)
 * [dist/windows/amd64/hello-go.zip zipped in a separate step so we don't need to zip with the cli](#distwindowsamd64hello-gozip-zipped-in-a-separate-step-so-we-dont-need-to-zip-with-the-cli)
@@ -50,7 +50,7 @@ Note that in either case, you must pass a private key for an address added to yo
 Create a `hyperplay.yml` in your project folder.
 
 `zip` is true if you want to zip the folder or file prior to upload.
-- Note that for HyperPlay submissions, you will need `zip: true` unless you are uploading a zip file.
+- Note that for NovaPlay submissions, you will need `zip: true` unless you are uploading a zip file.
 
 Example YML config file:
 ```yml
@@ -157,11 +157,11 @@ ARGUMENTS
   RELEASE  release name
 
 FLAGS
-  --channel=<value>              [default: main] Publish build to this release channel on HyperPlay.
+  --channel=<value>              [default: main] Publish build to this release channel on NovaPlay.
   --[no-]meta-tx                 Enable meta transactions
   --network=<value>              [default: https://rpc.valist.io] Blockchain network
   --private-key=<value>          Account private key
-  --[no-]skip_hyperplay_publish  Do not publish to HyperPlay. Only Valist.
+  --[no-]skip_hyperplay_publish  Do not publish to NovaPlay. Only Valist.
   --yml-path=<value>             Path to yml file containing publish args
 
 DESCRIPTION
@@ -190,16 +190,16 @@ HYPERPLAY_TARGET_CHANNEL=beta
 
 Make sure you pass the private key of your Release Manager with the flag `--private-key=<private_key>` 
 
-For HyperPlay Projects, make sure the public key is added as a Release Manager on your HyperPlay project. You can modify the project members at https://developers.hyperplay.xyz/<account_name>/<project_name>/settings.
+For NovaPlay Projects, make sure the public key is added as a Release Manager on your NovaPlay project. You can modify the project members at https://developers.novaplay.io/<account_name>/<project_name>/settings.
 
 It is also possible to add the public key directly to your project through the [Valist registry](https://polygonscan.com/address/0xd504d012d78b81fa27288628f3fc89b0e2f56e24) by calling `addProjectMember`.
 
 ## How do I find my account or project name?
 
-To get the account name, navigate to the [HyperPlay Dev Portal](https://developers.hyperplay.xyz) and on the project card, you can find your account name in the "Published by: <account_name" text.
+To get the account name, navigate to the [NovaPlay Dev Portal](https://developers.novaplay.io) and on the project card, you can find your account name in the "Published by: <account_name" text.
 
-![image](https://raw.githubusercontent.com/HyperPlay-Gaming/cli/main/public/account_name.png)
+![image](https://raw.githubusercontent.com/NovaPlay-Gaming/cli/main/public/account_name.png)
 
 To get the project name, click the project card. The project name is in the text input field with the "Game Name" label, shown below.
 
-![image](https://raw.githubusercontent.com/HyperPlay-Gaming/cli/main/public/project_name.png)
+![image](https://raw.githubusercontent.com/NovaPlay-Gaming/cli/main/public/project_name.png)

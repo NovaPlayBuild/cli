@@ -31,14 +31,14 @@ async function parseNetwork(network: string) {
 }
 
 export const skip_hyperplay_publish = Flags.boolean({
-  description: 'Do not publish to HyperPlay. Only Valist.',
+  description: 'Do not publish to NovaPlay. Only Valist.',
   allowNo: true,
   default: false,
   env: 'HYPERPLAY_SKIP_HYPERPLAY_PUBLISH'
 });
 
 export const channel = Flags.string({
-  description: 'Publish build to this release channel on HyperPlay.',
+  description: 'Publish build to this release channel on NovaPlay.',
   default: 'main',
   env: 'HYPERPLAY_TARGET_CHANNEL'
 });
