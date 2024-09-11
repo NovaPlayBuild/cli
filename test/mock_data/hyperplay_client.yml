@@ -35,16 +35,16 @@ platforms:
     path: ./test/mock_data/NovaPlay-0.12.0-Setup-x64.exe.blockmap 
     zip: false
   linux_pacman: 
-    path: ./test/mock_data/hyperplay-0.12.0.pacman 
+    path: ./test/mock_data/novaplay-0.12.0.pacman 
     zip: false
   linux_tarxz: 
-    path: ./test/mock_data/hyperplay-0.12.0.tar.xz 
+    path: ./test/mock_data/novaplay-0.12.0.tar.xz 
     zip: false
   linux_rpm: 
-    path: ./test/mock_data/hyperplay-0.12.0.x86_64.rpm 
+    path: ./test/mock_data/novaplay-0.12.0.x86_64.rpm 
     zip: false
   linux_deb: 
-    path: ./test/mock_data/hyperplay_0.12.0_amd64.deb 
+    path: ./test/mock_data/novaplay_0.12.0_amd64.deb 
     zip: false
   latest_linux_yml: 
     path: ./test/mock_data/latest-linux.yml 
