@@ -26,7 +26,7 @@ export default class Publish extends Command {
     'meta-tx': flags.metaTx,
     'network': flags.network,
     'private-key': flags.privateKey,
-    'skip_hyperplay_publish': flags.skip_hyperplay_publish,
+    'skip_novaplay_publish': flags.skip_novaplay_publish,
     'channel': flags.channel,
     'yml-path': flags.ymlPath
   }
@@ -59,7 +59,7 @@ export default class Publish extends Command {
   async parseConfig(args: { [name: string]: any; }, flags: FlagOutput) {
     const parsed = parseYml(args, flags)
     if (parsed === undefined) {
-      this.error('Account, project, and release were not supplied and hyperplay.yml does not exist')
+      this.error('Account, project, and release were not supplied and novaplay.yml does not exist')
     }
 
     const config = parsed;
@@ -140,7 +140,7 @@ export default class Publish extends Command {
     CliUx.ux.action.stop();
 
     // Publish to NovaPlay
-    if (!flags['skip_hyperplay_publish']) {
+    if (!flags['skip_novaplay_publish']) {
       await publish(
         apiClient,
         projectID,
@@ -151,7 +151,7 @@ export default class Publish extends Command {
 
     CliUx.ux.log(`Successfully published ${config.account}/${config.project}/${config.release}!`);
     let releaseText = 'view the release at:\n'
-    if (!flags['skip_hyperplay_publish'])
+    if (!flags['skip_novaplay_publish'])
       releaseText += `https://developers.novaplay.io/${config.account}/${config.project}/settings\n`
     CliUx.ux.log(releaseText);
 
