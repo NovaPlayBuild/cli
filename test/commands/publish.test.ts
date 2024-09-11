@@ -139,13 +139,13 @@ describe('publish CLI command', () => {
         return releaseMeta
     }
 
-    it('should create a release with the publish command and the hyperplay.yml file', async function () {
+    it('should create a release with the publish command and the novaplay.yml file', async function () {
         const publishArgs = [
             `--private-key=${publisherPrivateKey}`,
             '--no-meta-tx',
-            '--yml-path=./test/mock_data/hyperplay.yml',
+            '--yml-path=./test/mock_data/novaplay.yml',
             '--network=http://127.0.0.1:8545/',
-            '--skip_hyperplay_publish'
+            '--skip_novaplay_publish'
         ]
         const mockPlatforms = [
             { platformKey: 'darwin_amd64', fileName: 'mac_x64.zip', partCount: 1 },
@@ -165,9 +165,9 @@ describe('publish CLI command', () => {
         const publishArgs = [
             `--private-key=${publisherPrivateKey}`,
             '--no-meta-tx',
-            '--yml-path=./test/mock_data/hyperplay_publish.yml',
+            '--yml-path=./test/mock_data/novaplay_publish.yml',
             '--network=http://127.0.0.1:8545/',
-            '--skip_hyperplay_publish'
+            '--skip_novaplay_publish'
         ]
         const mockPlatforms = [
             { platformKey: 'NovaPlay-0.12.0-macOS-arm64.dmg', fileName: 'dmg.txt', partCount: 1 },
