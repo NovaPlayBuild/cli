@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import { getZipName } from '../../src/utils/getZipName'
 
 describe('Zip Name Tests', ()=>{
-    it('should get the folder name when zipping the same folder as hyperplay.yml', ()=>{
+    it('should get the folder name when zipping the same folder as novaplay.yml', ()=>{
         const name = getZipName('.').toLowerCase()
         expect(name).to.eq('./cli.zip')
     })
