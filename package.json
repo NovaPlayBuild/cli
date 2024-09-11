@@ -1,15 +1,15 @@
 {
-  "name": "@hyperplay/cli",
+  "name": "@novaplay/cli",
   "version": "2.13.0",
   "description": "Hyperplay CLI",
   "author": "NovaPlay Labs, Inc.",
   "bin": {
-    "hyperplay": "./bin/run"
+    "novaplay": "./bin/run"
   },
-  "homepage": "https://github.com/hyperplay/cli",
+  "homepage": "https://github.com/novaplay/cli",
   "license": "MPL-2.0",
   "main": "dist/index.js",
-  "repository": "hyperplay/cli",
+  "repository": "novaplay/cli",
   "files": [
     "/bin",
     "/dist",
@@ -62,8 +62,8 @@
     "typescript": "^4.6.4"
   },
   "oclif": {
-    "bin": "hyperplay",
-    "dirname": "hyperplay",
+    "bin": "novaplay",
+    "dirname": "novaplay",
     "commands": "./dist/commands",
     "plugins": [
       "@oclif/plugin-help"
@@ -83,7 +83,7 @@
   "engines": {
     "node": ">=12.0.0"
   },
-  "bugs": "https://github.com/hyperplay/cli/issues",
+  "bugs": "https://github.com/novaplay/cli/issues",
   "keywords": [
     "oclif"
   ],
