@@ -42,7 +42,7 @@ USAGE
 
 ## Publish
 
-The `publish` command requires a local YML file. The default YML path used is `./novaplay.yml`, but you can also specify the path to this file with the `--yml-path` flag or the `novaPLAY_YML_PATH` environment variable.
+The `publish` command requires a local YML file. The default YML path used is `./novaplay.yml`, but you can also specify the path to this file with the `--yml-path` flag or the `HYPERPLAY_YML_PATH` environment variable.
 
 Note that in either case, you must pass a private key for an address added to your project or account with the cli flag `--private-key <value>`.
 
@@ -84,7 +84,7 @@ platforms:
 
 Run the publish command from the novaplay cli. Set the publisher private key via an envrionment variable if CI/CD.
 ```bash
-novaPLAY_PRIVATE_KEY=0x1234 novaplay publish
+HYPERPLAY_PRIVATE_KEY=0x1234 novaplay publish
 ```
 
 # Commands
@@ -177,11 +177,11 @@ EXAMPLES
 
 Flags can also be specified with environment variables:
 ```bash
-novaPLAY_PRIVATE_KEY=0x123
-novaPLAY_NETWORK=polygon
-novaPLAY_ANDROID_AMD64_BUILD=./android/amd64
-novaPLAY_SKIP_novaPLAY_PUBLISH=false
-novaPLAY_TARGET_CHANNEL=beta
+HYPERPLAY_PRIVATE_KEY=0x123
+HYPERPLAY_NETWORK=polygon
+HYPERPLAY_ANDROID_AMD64_BUILD=./android/amd64
+HYPERPLAY_SKIP_HYPERPLAY_PUBLISH=false
+HYPERPLAY_TARGET_CHANNEL=beta
 ```
 
 # FAQ
