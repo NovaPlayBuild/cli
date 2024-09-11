@@ -8,8 +8,8 @@ export function parseYml(args: {[name: string]: any;}, flags: FlagOutput): Relea
   //TODO: add zod validation
   let config: ReleaseConfig;
   const flagPath = flags['yml-path']
-  const ymlPath = flagPath ? flagPath : 'hyperplay.yml'
-  // using hyperplay.yml 
+  const ymlPath = flagPath ? flagPath : 'novaplay.yml'
+  // using novaplay.yml 
   if(fs.existsSync(ymlPath)){
     const data = fs.readFileSync(ymlPath, 'utf8');
     config = YAML.parse(data);
