@@ -30,7 +30,7 @@ async function parseNetwork(network: string) {
   }
 }
 
-export const skip_hyperplay_publish = Flags.boolean({
+export const skip_novaplay_publish = Flags.boolean({
   description: 'Do not publish to NovaPlay. Only Valist.',
   allowNo: true,
   default: false,
